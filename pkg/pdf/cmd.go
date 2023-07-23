@@ -1,4 +1,4 @@
-package screenshot
+package pdf
 
 import (
 	"context"
@@ -12,13 +12,12 @@ import (
 
 var width *int
 var height *int
-var darkMode *bool
 var wait *time.Duration
 
 var Cmd = &cobra.Command{
-	Use:   "screenshot [url] [filename]",
+	Use:   "pdf [url] [filename]",
 	Args:  cobra.ExactArgs(2),
-	Short: "Opens a website, make a screenshot and save it into a file.",
+	Short: "Opens a website and create a PDF file.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		options := Options{
 			Url: args[0],
@@ -26,8 +25,7 @@ var Cmd = &cobra.Command{
 				Width:  *width,
 				Height: *height,
 			},
-			DarkMode: *darkMode,
-			Wait:     *wait,
+			Wait: *wait,
 		}
 		filename := args[1]
 
@@ -43,7 +41,7 @@ var Cmd = &cobra.Command{
 
 		var res []byte
 
-		if err := chromedp.Run(ctx, makeScreenshot(options, &res)); err != nil {
+		if err := chromedp.Run(ctx, makePdf(options, &res)); err != nil {
 			log.Fatal(err)
 			return err
 		}
@@ -60,6 +58,5 @@ var Cmd = &cobra.Command{
 func init() {
 	width = Cmd.Flags().Int("width", 1920, "width")
 	height = Cmd.Flags().Int("height", 1080, "height")
-	darkMode = Cmd.Flags().Bool("darkmode", false, "darkmode")
 	wait = Cmd.Flags().Duration("wait", 0, "wait")
 }

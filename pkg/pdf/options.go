@@ -1,4 +1,4 @@
-package screenshot
+package pdf
 
 import "time"
 
@@ -10,6 +10,5 @@ type Viewport struct {
 type Options struct {
 	Url      string
 	Viewport *Viewport
-	DarkMode bool
 	Wait     time.Duration
 }

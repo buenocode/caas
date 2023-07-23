@@ -1,11 +1,13 @@
-package screenshot
+package pdf
 
 import (
-	"github.com/chromedp/cdproto/emulation"
+	"context"
+
+	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/chromedp"
 )
 
-func makeScreenshot(options Options, res *[]byte) chromedp.Tasks {
+func makePdf(options Options, res *[]byte) chromedp.Tasks {
 	var actions []chromedp.Action
 
 	if options.Viewport != nil {
@@ -15,17 +17,20 @@ func makeScreenshot(options Options, res *[]byte) chromedp.Tasks {
 		))
 	}
 
-	if options.DarkMode {
-		actions = append(actions, emulation.SetAutoDarkModeOverride().WithEnabled(options.DarkMode))
-	}
-
 	actions = append(actions, chromedp.Navigate(options.Url))
 
 	if options.Wait > 0 {
 		actions = append(actions, chromedp.Sleep(options.Wait))
 	}
 
-	actions = append(actions, chromedp.CaptureScreenshot(res))
+	actions = append(actions, chromedp.ActionFunc(func(ctx context.Context) error {
+		var err error
+		*res, _, err = page.PrintToPDF().WithPrintBackground(false).Do(ctx)
+		if err != nil {
+			return err
+		}
+		return nil
+	}))
 
 	return actions
 }
