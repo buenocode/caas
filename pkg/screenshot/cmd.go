@@ -47,7 +47,7 @@ var Cmd = &cobra.Command{
 
 		var res []byte
 
-		if err := chromedp.Run(ctx, makeScreenshot(options, &res)); err != nil {
+		if err := chromedp.Run(ctx, MakeScreenshot(options, &res)); err != nil {
 			log.Fatal(err)
 			return err
 		}

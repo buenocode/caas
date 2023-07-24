@@ -9,7 +9,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func makePdf(options Options, res *[]byte) chromedp.Tasks {
+func MakePdf(options Options, res *[]byte) chromedp.Tasks {
 	var actions []chromedp.Action
 
 	if options.Viewport != nil {

@@ -6,7 +6,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func makeScreenshot(options Options, res *[]byte) chromedp.Tasks {
+func MakeScreenshot(options Options, res *[]byte) chromedp.Tasks {
 	var actions []chromedp.Action
 
 	if options.Viewport != nil {

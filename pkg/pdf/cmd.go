@@ -45,7 +45,7 @@ var Cmd = &cobra.Command{
 
 		var res []byte
 
-		if err := chromedp.Run(ctx, makePdf(options, &res)); err != nil {
+		if err := chromedp.Run(ctx, MakePdf(options, &res)); err != nil {
 			log.Fatal(err)
 			return err
 		}
