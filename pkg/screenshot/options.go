@@ -8,8 +8,10 @@ type Viewport struct {
 }
 
 type Options struct {
-	Url      string
-	Viewport *Viewport
-	DarkMode bool
-	Wait     time.Duration
+	Url        string
+	Viewport   *Viewport
+	DarkMode   bool
+	Insecure   bool
+	JavaScript bool
+	Wait       time.Duration
 }

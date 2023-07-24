@@ -13,6 +13,8 @@ import (
 var width *int
 var height *int
 var darkMode *bool
+var insecure *bool
+var javascript *bool
 var wait *time.Duration
 
 var Cmd = &cobra.Command{
@@ -26,8 +28,10 @@ var Cmd = &cobra.Command{
 				Width:  *width,
 				Height: *height,
 			},
-			DarkMode: *darkMode,
-			Wait:     *wait,
+			DarkMode:   *darkMode,
+			Insecure:   *insecure,
+			JavaScript: *javascript,
+			Wait:       *wait,
 		}
 		filename := args[1]
 
@@ -61,5 +65,7 @@ func init() {
 	width = Cmd.Flags().Int("width", 1920, "width")
 	height = Cmd.Flags().Int("height", 1080, "height")
 	darkMode = Cmd.Flags().Bool("darkmode", false, "darkmode")
+	insecure = Cmd.Flags().Bool("insecure", false, "insecure")
+	javascript = Cmd.Flags().Bool("javascript", true, "javascript")
 	wait = Cmd.Flags().Duration("wait", 0, "wait")
 }

@@ -3,7 +3,9 @@ package pdf
 import (
 	"context"
 
+	"github.com/chromedp/cdproto/emulation"
 	"github.com/chromedp/cdproto/page"
+	"github.com/chromedp/cdproto/security"
 	"github.com/chromedp/chromedp"
 )
 
@@ -15,6 +17,14 @@ func makePdf(options Options, res *[]byte) chromedp.Tasks {
 			int64(options.Viewport.Width),
 			int64(options.Viewport.Height),
 		))
+	}
+
+	if options.Insecure {
+		actions = append(actions, security.SetIgnoreCertificateErrors(true))
+	}
+
+	if !options.JavaScript {
+		actions = append(actions, emulation.SetScriptExecutionDisabled(true))
 	}
 
 	actions = append(actions, chromedp.Navigate(options.Url))

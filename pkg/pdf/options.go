@@ -8,7 +8,9 @@ type Viewport struct {
 }
 
 type Options struct {
-	Url      string
-	Viewport *Viewport
-	Wait     time.Duration
+	Url        string
+	Viewport   *Viewport
+	Insecure   bool
+	JavaScript bool
+	Wait       time.Duration
 }

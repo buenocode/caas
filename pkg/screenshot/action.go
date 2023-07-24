@@ -2,6 +2,7 @@ package screenshot
 
 import (
 	"github.com/chromedp/cdproto/emulation"
+	"github.com/chromedp/cdproto/security"
 	"github.com/chromedp/chromedp"
 )
 
@@ -16,7 +17,15 @@ func makeScreenshot(options Options, res *[]byte) chromedp.Tasks {
 	}
 
 	if options.DarkMode {
-		actions = append(actions, emulation.SetAutoDarkModeOverride().WithEnabled(options.DarkMode))
+		actions = append(actions, emulation.SetAutoDarkModeOverride().WithEnabled(true))
+	}
+
+	if options.Insecure {
+		actions = append(actions, security.SetIgnoreCertificateErrors(true))
+	}
+
+	if !options.JavaScript {
+		actions = append(actions, emulation.SetScriptExecutionDisabled(true))
 	}
 
 	actions = append(actions, chromedp.Navigate(options.Url))
