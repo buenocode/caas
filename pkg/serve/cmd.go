@@ -3,6 +3,7 @@ package serve
 import (
 	"context"
 	"log"
+	"net/http"
 	"net/url"
 	"strconv"
 	"time"
@@ -81,16 +82,16 @@ var Cmd = &cobra.Command{
 			var res []byte
 			if err := chromedp.Run(ctx, screenshot.MakeScreenshot(options, &res)); err != nil {
 				log.Printf("Error: %v\n", err)
-				c.AbortWithError(400, err)
+				c.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
-			c.Data(200, "image/png", res)
+			c.Data(http.StatusOK, "image/png", res)
 		})
 		r.POST("/screenshot", func(c *gin.Context) {
 			var options screenshot.Options
 			if err := c.BindJSON(&options); err != nil {
 				log.Printf("Error: %v\n", err)
-				c.AbortWithError(400, err)
+				c.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
 
@@ -107,10 +108,10 @@ var Cmd = &cobra.Command{
 			var res []byte
 			if err := chromedp.Run(ctx, screenshot.MakeScreenshot(options, &res)); err != nil {
 				log.Printf("Error: %v\n", err)
-				c.AbortWithError(400, err)
+				c.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
-			c.Data(200, "image/png", res)
+			c.Data(http.StatusOK, "image/png", res)
 		})
 		r.GET("/pdf", func(c *gin.Context) {
 			params := c.Request.URL.Query()
@@ -139,16 +140,16 @@ var Cmd = &cobra.Command{
 			var res []byte
 			if err := chromedp.Run(ctx, pdf.MakePdf(options, &res)); err != nil {
 				log.Printf("Error: %v\n", err)
-				c.AbortWithError(400, err)
+				c.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
-			c.Data(200, "application/pdf", res)
+			c.Data(http.StatusOK, "application/pdf", res)
 		})
 		r.POST("/pdf", func(c *gin.Context) {
 			var options pdf.Options
 			if err := c.BindJSON(&options); err != nil {
 				log.Printf("Error: %v\n", err)
-				c.AbortWithError(400, err)
+				c.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
 
@@ -165,10 +166,10 @@ var Cmd = &cobra.Command{
 			var res []byte
 			if err := chromedp.Run(ctx, pdf.MakePdf(options, &res)); err != nil {
 				log.Printf("Error: %v\n", err)
-				c.AbortWithError(400, err)
+				c.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
-			c.Data(200, "application/pdf", res)
+			c.Data(http.StatusOK, "application/pdf", res)
 		})
 		return r.Run(*listen)
 	},
