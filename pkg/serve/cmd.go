@@ -86,6 +86,32 @@ var Cmd = &cobra.Command{
 			}
 			c.Data(200, "image/png", res)
 		})
+		r.POST("/screenshot", func(c *gin.Context) {
+			var options screenshot.Options
+			if err := c.BindJSON(&options); err != nil {
+				log.Printf("Error: %v\n", err)
+				c.AbortWithError(400, err)
+				return
+			}
+
+			log.Printf("options %v\n", options)
+			log.Printf("viewport %v\n", options.Viewport)
+
+			// create context
+			ctx, cancel := chromedp.NewContext(
+				context.Background(),
+				// chromedp.WithDebugf(log.Printf),
+			)
+			defer cancel()
+
+			var res []byte
+			if err := chromedp.Run(ctx, screenshot.MakeScreenshot(options, &res)); err != nil {
+				log.Printf("Error: %v\n", err)
+				c.AbortWithError(400, err)
+				return
+			}
+			c.Data(200, "image/png", res)
+		})
 		r.GET("/pdf", func(c *gin.Context) {
 			params := c.Request.URL.Query()
 			options := pdf.Options{
@@ -98,6 +124,32 @@ var Cmd = &cobra.Command{
 				Insecure:   getBool(params, "insecure", false),
 				JavaScript: getBool(params, "javascript", true),
 				Wait:       getDuration(params, "wait", 0),
+			}
+
+			log.Printf("options %v\n", options)
+			log.Printf("viewport %v\n", options.Viewport)
+
+			// create context
+			ctx, cancel := chromedp.NewContext(
+				context.Background(),
+				// chromedp.WithDebugf(log.Printf),
+			)
+			defer cancel()
+
+			var res []byte
+			if err := chromedp.Run(ctx, pdf.MakePdf(options, &res)); err != nil {
+				log.Printf("Error: %v\n", err)
+				c.AbortWithError(400, err)
+				return
+			}
+			c.Data(200, "application/pdf", res)
+		})
+		r.POST("/pdf", func(c *gin.Context) {
+			var options pdf.Options
+			if err := c.BindJSON(&options); err != nil {
+				log.Printf("Error: %v\n", err)
+				c.AbortWithError(400, err)
+				return
 			}
 
 			log.Printf("options %v\n", options)
