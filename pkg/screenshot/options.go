@@ -11,6 +11,8 @@ type Options struct {
 	Url        string
 	Viewport   *Viewport
 	DarkMode   bool
+	Full       bool
+	Selector   string
 	Insecure   bool
 	JavaScript bool
 	Wait       time.Duration

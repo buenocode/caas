@@ -1,10 +1,16 @@
-test: github.png spiegel-light.png spiegel-dark.png spiegel-light-nojs.png spiegel-dark-nojs.png spiegel.pdf spiegel-nojs.pdf
+test: github.png github-full.png spiegel-light.png spiegel-dark.png spiegel-light-nojs.png spiegel-dark-nojs.png spiegel.pdf spiegel-nojs.pdf
 
 clean:
 	rm -v *.png *.pdf
 
 github.png:
-	go run ./pkg/main.go screenshot https://github.com github.png --wait 3s
+	go run ./pkg/main.go screenshot https://github.com github.png
+
+github-full.png:
+	go run ./pkg/main.go screenshot https://github.com github-full.png --wait 10s --full
+
+github-footer.png:
+	go run ./pkg/main.go screenshot https://github.com github-footer.png --wait 3s --selector=footer
 
 spiegel-light.png:
 	go run ./pkg/main.go screenshot https://spiegel.de spiegel-light.png --wait 3s

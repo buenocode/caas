@@ -34,7 +34,13 @@ func MakeScreenshot(options Options, res *[]byte) chromedp.Tasks {
 		actions = append(actions, chromedp.Sleep(options.Wait))
 	}
 
-	actions = append(actions, chromedp.CaptureScreenshot(res))
+	if options.Full {
+		actions = append(actions, chromedp.FullScreenshot(res, 100))
+	} else if options.Selector != "" {
+		actions = append(actions, chromedp.Screenshot(options.Selector, res, chromedp.ByQuery))
+	} else {
+		actions = append(actions, chromedp.CaptureScreenshot(res))
+	}
 
 	return actions
 }

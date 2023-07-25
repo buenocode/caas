@@ -13,6 +13,8 @@ import (
 var width *int
 var height *int
 var darkMode *bool
+var full *bool
+var selector *string
 var insecure *bool
 var javascript *bool
 var wait *time.Duration
@@ -29,6 +31,8 @@ var Cmd = &cobra.Command{
 				Height: *height,
 			},
 			DarkMode:   *darkMode,
+			Full:       *full,
+			Selector:   *selector,
 			Insecure:   *insecure,
 			JavaScript: *javascript,
 			Wait:       *wait,
@@ -65,6 +69,8 @@ func init() {
 	width = Cmd.Flags().Int("width", 1920, "width")
 	height = Cmd.Flags().Int("height", 1080, "height")
 	darkMode = Cmd.Flags().Bool("darkmode", false, "darkmode")
+	full = Cmd.Flags().Bool("full", false, "full")
+	selector = Cmd.Flags().String("selector", "", "selector")
 	insecure = Cmd.Flags().Bool("insecure", false, "insecure")
 	javascript = Cmd.Flags().Bool("javascript", true, "javascript")
 	wait = Cmd.Flags().Duration("wait", 0, "wait")
