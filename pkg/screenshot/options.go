@@ -1,6 +1,10 @@
 package screenshot
 
-import "time"
+import (
+	"time"
+
+	"github.com/chromedp/cdproto/network"
+)
 
 type Viewport struct {
 	Width  int
@@ -10,6 +14,7 @@ type Viewport struct {
 type Options struct {
 	Url        string
 	Viewport   *Viewport
+	Cookies    []network.SetCookieParams
 	DarkMode   bool
 	Full       bool
 	Selector   string

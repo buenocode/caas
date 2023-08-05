@@ -28,6 +28,12 @@ func MakeScreenshot(options Options, res *[]byte) chromedp.Tasks {
 		actions = append(actions, emulation.SetScriptExecutionDisabled(true))
 	}
 
+	if options.Cookies != nil {
+		for _, cookie := range options.Cookies {
+			actions = append(actions, &cookie)
+		}
+	}
+
 	actions = append(actions, chromedp.Navigate(options.Url))
 
 	if options.Wait > 0 {
